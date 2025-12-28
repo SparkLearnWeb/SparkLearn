@@ -666,6 +666,54 @@
                 showQuestion(currentExam[currentQuestionIndex]);
             });
         };
-    </script>
-</body>
-</html>
+    </script><!-- Discord OAuth2 --><script>
+    (function() {
+        const CLIENT_ID = '1421494912267976775';
+        const REDIRECT_URI = 'https://sparklearnweb.github.io';
+
+        // 1. Fix the login button's click behavior
+        const loginBtn = document.getElementById('login-btn');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', (e) => {
+                e.preventDefault(); // Stop default link behavior
+                const authUrl = `discord.com{CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
+                window.location.href = authUrl;
+            });
+        }
+
+        // 2. Use addEventListener so we don't overwrite your existing window.onload
+        window.addEventListener('load', () => {
+            const fragment = new URLSearchParams(window.location.hash.slice(1));
+            const accessToken = fragment.get('access_token');
+            const tokenType = fragment.get('token_type');
+
+            if (accessToken) {
+                // Fetch User Profile from Discord
+                fetch('discord.com', {
+                    headers: { Authorization: `${tokenType} ${accessToken}` }
+                })
+                .then(res => res.json())
+                .then(user => {
+                    // Update the UI elements from your existing HTML
+                    const userNameEl = document.getElementById('user-name');
+                    const userAvatarEl = document.getElementById('user-avatar');
+                    const profileContainer = document.getElementById('user-profile');
+                    const loginButton = document.getElementById('login-btn');
+                    const generateBtn = document.getElementById('generate-exam-btn');
+
+                    if (userNameEl) userNameEl.innerText = user.username;
+                    if (userAvatarEl) userAvatarEl.src = `cdn.discordapp.com{user.id}/${user.avatar}.png`;
+                    if (profileContainer) profileContainer.classList.remove('hide');
+                    if (loginButton) loginButton.classList.add('hide');
+                    if (generateBtn) generateBtn.disabled = false;
+                    
+                    console.log("Discord authentication successful for:", user.username);
+                })
+                .catch(err => console.error("Discord Auth Error:", err));
+
+                // Clean the URL hash for a professional look
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+    })();
+</script></body></html>
