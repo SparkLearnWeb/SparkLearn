@@ -301,9 +301,8 @@
 
         // --- AUTHENTICATION LOGIC ---
         function handleLogin() {
-            const authUrl = `discord.com{CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${SCOPES}`;
-            const fullAuthUrl = `https://`+authUrl
-            window.location.href = fullAuthUrl;
+            const authUrl = `https://discord.com/oauth2/authorize?client_id=1421494912267976775&response_type=code&redirect_uri=https%3A%2F%2Fsparklearnweb.github.io&scope=identify`;
+            window.location.href = authUrl;
         }
 
         function getAccessToken() {
