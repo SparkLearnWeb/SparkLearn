@@ -301,7 +301,7 @@
 
         // --- AUTHENTICATION LOGIC ---
         function handleLogin() {
-            const authUrl = `discord.com{CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${SCOPES}`;
+            const authUrl = `https://discord.com{CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${SCOPES}`;
             window.location.href = authUrl;
         }
 
